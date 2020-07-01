@@ -28,7 +28,7 @@ else:
 
 
 
-GCS_PATH = "gs://kds-08a49c9afbaef16599490e4ab24173147920950ef7ea835e9804743e"
+GCS_PATH = "gs://scl-product-detection/kds-08a49c9afbaef16599490e4ab24173147920950ef7ea835e9804743e"
 CLASSES = 42
 BATCH_SIZE = 16 * STRATEGY.num_replicas_in_sync
 AUTOTUNE = tf.data.experimental.AUTOTUNE
