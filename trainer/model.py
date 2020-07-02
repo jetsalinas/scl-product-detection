@@ -50,7 +50,7 @@ OPTIMIZER = "sgd"
 LOSS_FN = "categorical_crossentropy"
 
 MODEL_NAME = "modelb1.h5"
-SAVE_PATH = "gs://scl-product-detection-data/models" + MODEL_NAME
+SAVE_PATH = "gs://shopee-product-detection-data/models" + MODEL_NAME
 
 """
 """
