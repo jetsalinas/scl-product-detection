@@ -1,0 +1,21 @@
+gcloud ai-platform jobs submit training effnetb06_08 
+--staging-bucket=gs://scl-product-detection \
+--package-path=trainer --module-name=trainer.model \
+--runtime-version=2.1 \
+--python-version=3.7 \
+--scale-tier=BASIC_TPU \ 
+--region=us-central1 \
+
+gcloud ai-platform jobs submit training effnetb06_11 --staging-bucket=gs://scl-product-detection --package-path=trainer --module-name=trainer.model --runtime-version=2.1 --python-version=3.7 --scale-tier=BASIC_GPU --region=us-central1
+
+gcloud ai-platform jobs submit training effnetb01_00 --staging-bucket=gs://scl-product-detection --package-path=trainer --module-name=trainer.model --runtime-version=2.1 --python-version=3.7 --scale-tier=BASIC_GPU --region=us-central1
+
+
+gcloud ai-platform jobs submit training effnetb06_11 \
+--staging-bucket=gs://scl-product-detection \
+--package-path=trainer --module-name=trainer.model \
+--runtime-version=2.1 \
+--python-version=3.7 \
+--scale-tier=custom \ 
+--region=us-central1 \
+--master-accelerator count=1,type=nvidia-tesla-t4

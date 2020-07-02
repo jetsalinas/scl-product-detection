@@ -1,11 +1,14 @@
 import tensorflow as tf
 import tensorflow.keras as keras
+from tensorflow.python.lib.io import file_io
 import efficientnet.tfkeras as efn
 
 from sklearn.model_selection import train_test_split
 
 import pandas as pd
 import numpy as np
+
+import gcsfs
 
 
 """
@@ -41,12 +44,13 @@ TRAIN_DF = pd.read_csv(GCS_PATH + "/train.csv")
 TRAIN_LEN = int(TRAIN_DF["filename"].shape[0] * (1 - VAL_SPLIT))
 VAL_LEN = int(TRAIN_DF["filename"].shape[0] * VAL_SPLIT)
 
-IMG_SIZE = (528, 528) # B6
+IMG_SIZE = (240, 240)
 
 OPTIMIZER = "sgd"
 LOSS_FN = "categorical_crossentropy"
 
-SAVE_PATH = "gs://scl-product-detection/modelb6.h5"
+MODEL_NAME = "modelb1.h5"
+SAVE_PATH = "gs://scl-product-detection/" + MODEL_NAME
 
 """
 """
@@ -118,7 +122,7 @@ def prepare_dataset(dataset):
 
     dataset = dataset.cache()
     dataset = dataset.repeat()
-    dataset = dataset.shuffle(buffer_size = 2**11)
+    dataset = dataset.shuffle(buffer_size = 256)
     dataset = dataset.batch(BATCH_SIZE)
     dataset = dataset.prefetch(AUTOTUNE)
 
@@ -131,7 +135,7 @@ def get_model():
 
     with STRATEGY.scope():
         
-        efnm = efn.EfficientNetB6(weights='noisy-student', include_top=False, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3))
+        efnm = efn.EfficientNetB1(weights='noisy-student', include_top=False, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3))
         efnm.trainable = True
         
         model = tf.keras.models.Sequential([
@@ -156,18 +160,19 @@ def train():
 
     model = get_model()
 
-    earlystop_callback = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0.0001, patience=2)
-
     hist = model.fit(
         train_data,
         steps_per_epoch = TRAIN_LEN // BATCH_SIZE,
         validation_data = val_data, 
         validation_steps = VAL_LEN // BATCH_SIZE,
-        epochs = EPOCHS,
-        callbacks = [earlystop_callback]
+        epochs = EPOCHS
     )
 
-    model.save(SAVE_PATH, save_format='h5')
+    model.save(MODEL_NAME, save_format='h5')
+
+    with file_io.FileIO(MODEL_NAME, mode='rb') as in_file:
+        with file_io.FileIO(SAVE_PATH, mode='wb+') as out_file:
+            out_file.write(in_file.read())
 
 
 if __name__ == "__main__":
