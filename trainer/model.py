@@ -37,20 +37,23 @@ CLASSES = 42
 BATCH_SIZE = 16 * STRATEGY.num_replicas_in_sync
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
-EPOCHS = 25
+EPOCHS = 20
 
 VAL_SPLIT = 0.1
 TRAIN_DF = pd.read_csv(GCS_PATH + "/train.csv")
 TRAIN_LEN = int(TRAIN_DF["filename"].shape[0] * (1 - VAL_SPLIT))
 VAL_LEN = int(TRAIN_DF["filename"].shape[0] * VAL_SPLIT)
 
-IMG_SIZE = (240, 240)
+# IMG_SIZE = (240, 240) # B1
+IMG_SIZE = (300, 300) # B3
+# IMG_SIZE = (456, 456) # B5
+# IMG_SIZE = (600, 600) # B5
 
 OPTIMIZER = "sgd"
 LOSS_FN = "categorical_crossentropy"
 
-MODEL_NAME = "modelb1.h5"
-SAVE_PATH = "gs://shopee-product-detection-data/models" + MODEL_NAME
+MODEL_NAME = "modelb3.h5"
+SAVE_PATH = "gs://shopee-product-detection-data/models/" + MODEL_NAME
 
 """
 """
@@ -135,7 +138,7 @@ def get_model():
 
     with STRATEGY.scope():
         
-        efnm = efn.EfficientNetB1(weights='noisy-student', include_top=False, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3))
+        efnm = efn.EfficientNetB3(weights='noisy-student', include_top=False, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3))
         efnm.trainable = True
         
         model = tf.keras.models.Sequential([
