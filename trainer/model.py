@@ -32,7 +32,7 @@ else:
 
 
 
-GCS_PATH = "gs://kds-08a49c9afbaef16599490e4ab24173147920950ef7ea835e9804743e"
+GCS_PATH = "gs://shopee-product-detection-data/data"
 CLASSES = 42
 BATCH_SIZE = 16 * STRATEGY.num_replicas_in_sync
 AUTOTUNE = tf.data.experimental.AUTOTUNE
@@ -50,7 +50,7 @@ OPTIMIZER = "sgd"
 LOSS_FN = "categorical_crossentropy"
 
 MODEL_NAME = "modelb1.h5"
-SAVE_PATH = "gs://scl-product-detection/" + MODEL_NAME
+SAVE_PATH = "gs://scl-product-detection-data/models" + MODEL_NAME
 
 """
 """
