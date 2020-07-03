@@ -125,11 +125,10 @@ def augment_dataset(dataset):
 """
 def prepare_dataset(dataset):
 
-    dataset = dataset.cache()
-    dataset = dataset.repeat()
     dataset = dataset.shuffle(buffer_size = 256)
     dataset = dataset.batch(BATCH_SIZE)
-    dataset = dataset.prefetch(AUTOTUNE)
+    dataset = dataset.cache()
+    dataset = dataset.repeat()
 
     return dataset
 
