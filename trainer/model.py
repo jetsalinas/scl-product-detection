@@ -37,7 +37,7 @@ CLASSES = 42
 BATCH_SIZE = 16 * STRATEGY.num_replicas_in_sync
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
-EPOCHS = 15
+EPOCHS = 10
 
 VAL_SPLIT = 0.1
 TRAIN_DF = pd.read_csv(GCS_PATH + "/train.csv")
