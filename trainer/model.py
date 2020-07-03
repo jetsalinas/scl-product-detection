@@ -33,7 +33,7 @@ import gcsfs
 
 GCS_PATH = "gs://shopee-product-detection-data/data"
 CLASSES = 42
-BATCH_SIZE = 64
+BATCH_SIZE = 32
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 EPOCHS = 15
@@ -121,7 +121,7 @@ def augment_dataset(dataset):
 """
 def prepare_dataset(dataset):
 
-    dataset = dataset.shuffle(buffer_size = 256)
+    dataset = dataset.shuffle(buffer_size = 128)
     dataset = dataset.batch(BATCH_SIZE)
     dataset = dataset.cache()
     dataset = dataset.repeat()
@@ -133,7 +133,7 @@ def prepare_dataset(dataset):
 """
 def get_model():
         
-    fv = hub.KerasLayer("https://tfhub.dev/google/imagenet/resnet_v2_152/feature_vector/4", trainable = True)
+    fv = hub.KerasLayer("https://tfhub.dev/google/imagenet/resnet_v2_152/feature_vector/4", trainable=True, input_shape=(*IMG_SIZE, 3))
     
     model = tf.keras.models.Sequential([
             fv,
