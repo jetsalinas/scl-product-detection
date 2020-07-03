@@ -80,10 +80,10 @@ def encode(path, label):
 
     image = tf.image.decode_jpeg(tf.io.read_file(path), channels=3)
     image = tf.image.resize(image, IMG_SIZE)
-    image = tf.image.convert_image_dtype(image, tf.float32)
+    image = tf.image.convert_image_dtype(image, tf.float16)
     image = image / 255.0
     
-    label = tf.cast(label, tf.int32)
+    label = tf.cast(label, tf.int8)
 
     return image, label
 
