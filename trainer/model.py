@@ -33,7 +33,7 @@ import gcsfs
 
 GCS_PATH = "gs://shopee-product-detection-data/data"
 CLASSES = 42
-BATCH_SIZE = 32
+BATCH_SIZE = 128
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 EPOCHS = 15
