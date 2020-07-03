@@ -13,27 +13,27 @@ import gcsfs
 
 """
 """
-try:
-    # TPU detection. No parameters necessary if TPU_NAME environment variable is
-    # set.
-    tpu = tf.distribute.cluster_resolver.TPUClusterResolver()
-    print('Running on TPU ', tpu.master())
-except ValueError:
-    tpu = None
+# try:
+#     # TPU detection. No parameters necessary if TPU_NAME environment variable is
+#     # set.
+#     tpu = tf.distribute.cluster_resolver.TPUClusterResolver()
+#     print('Running on TPU ', tpu.master())
+# except ValueError:
+#     tpu = None
 
-if tpu:
-    tf.config.experimental_connect_to_cluster(tpu)
-    tf.tpu.experimental.initialize_tpu_system(tpu)
-    STRATEGY = tf.distribute.experimental.TPUStrategy(tpu)
-    print("Num replicas: ", STRATEGY.num_replicas_in_sync)
-else:
-    # Default distribution strategy in Tensorflow. Works on CPU and single GPU.
-    STRATEGY = tf.distribute.get_strategy()
+# if tpu:
+#     tf.config.experimental_connect_to_cluster(tpu)
+#     tf.tpu.experimental.initialize_tpu_system(tpu)
+#     STRATEGY = tf.distribute.experimental.TPUStrategy(tpu)
+#     print("Num replicas: ", STRATEGY.num_replicas_in_sync)
+# else:
+#     # Default distribution strategy in Tensorflow. Works on CPU and single GPU.
+#     STRATEGY = tf.distribute.get_strategy()
 
 
 GCS_PATH = "gs://shopee-product-detection-data/data"
 CLASSES = 42
-BATCH_SIZE = 16 * STRATEGY.num_replicas_in_sync
+BATCH_SIZE = 16 * 2
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 EPOCHS = 15
