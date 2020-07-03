@@ -33,7 +33,7 @@ import gcsfs
 
 GCS_PATH = "gs://shopee-product-detection-data/data"
 CLASSES = 42
-BATCH_SIZE = 16
+BATCH_SIZE = 64
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 EPOCHS = 15
@@ -52,7 +52,7 @@ IMG_SIZE = (240, 240) # B1
 OPTIMIZER = "sgd"
 LOSS_FN = "categorical_crossentropy"
 
-MODEL_NAME = "modelb7.h5"
+MODEL_NAME = "modelb6.h5"
 SAVE_PATH = "gs://shopee-product-detection-data/models/" + MODEL_NAME
 
 """
@@ -137,7 +137,7 @@ def prepare_dataset(dataset):
 """
 def get_model():
         
-    efnm = efn.EfficientNetB7(weights='noisy-student', include_top=False, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3))
+    efnm = efn.EfficientNetB6(weights='noisy-student', include_top=False, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3))
     efnm.trainable = True
     
     model = tf.keras.models.Sequential([
