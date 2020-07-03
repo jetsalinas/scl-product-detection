@@ -31,8 +31,8 @@ else:
     STRATEGY = tf.distribute.get_strategy()
 
 
-
-GCS_PATH = "gs://shopee-product-detection-data/data"
+GCS_PATH = "../c2/data"
+# GCS_PATH = "gs://shopee-product-detection-data/data"
 CLASSES = 42
 BATCH_SIZE = 16 * STRATEGY.num_replicas_in_sync
 AUTOTUNE = tf.data.experimental.AUTOTUNE
@@ -47,12 +47,13 @@ VAL_LEN = int(TRAIN_DF["filename"].shape[0] * VAL_SPLIT)
 # IMG_SIZE = (240, 240) # B1
 # IMG_SIZE = (300, 300) # B3
 # IMG_SIZE = (456, 456) # B5
-IMG_SIZE = (528, 528) # B6
+# IMG_SIZE = (528, 528) # B6
+IMG_SIZE = (600, 600) # B7
 
 OPTIMIZER = "sgd"
 LOSS_FN = "categorical_crossentropy"
 
-MODEL_NAME = "modelb6.h5"
+MODEL_NAME = "modelb7.h5"
 SAVE_PATH = "gs://shopee-product-detection-data/models/" + MODEL_NAME
 
 """
@@ -83,6 +84,8 @@ def encode(path, label):
     image = tf.image.convert_image_dtype(image, tf.float32)
     image = image / 255.0
     
+    label = tf.cast(label, tf.int32)
+
     return image, label
 
 
@@ -123,7 +126,7 @@ def augment_dataset(dataset):
 """
 def prepare_dataset(dataset):
 
-    dataset = dataset.cache()
+    # dataset = dataset.cache()
     dataset = dataset.repeat()
     dataset = dataset.shuffle(buffer_size = 256)
     dataset = dataset.batch(BATCH_SIZE)
@@ -138,7 +141,7 @@ def get_model():
 
     with STRATEGY.scope():
         
-        efnm = efn.EfficientNetB6(weights='noisy-student', include_top=False, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3))
+        efnm = efn.EfficientNetB7(weights='noisy-student', include_top=False, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3))
         efnm.trainable = True
         
         model = tf.keras.models.Sequential([
