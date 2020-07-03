@@ -136,19 +136,16 @@ def prepare_dataset(dataset):
 """
 """
 def get_model():
-
-    with STRATEGY.scope():
         
-        efnm = efn.EfficientNetB6(weights='noisy-student', include_top=False, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3))
-        efnm.trainable = True
-        
-        model = tf.keras.models.Sequential([
-                efnm,
-                tf.keras.layers.Flatten(),
-                tf.keras.layers.Dense(CLASSES, activation='softmax')
-            ])
-
-        model.compile(loss=LOSS_FN, optimizer=OPTIMIZER, metrics=['accuracy'])
+    efnm = efn.EfficientNetB6(weights='noisy-student', include_top=False, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3))
+    efnm.trainable = True
+    
+    model = tf.keras.models.Sequential([
+            efnm,
+            tf.keras.layers.Flatten(),
+            tf.keras.layers.Dense(CLASSES, activation='softmax')
+        ])
+    model.compile(loss=LOSS_FN, optimizer=OPTIMIZER, metrics=['accuracy'])
 
     return model
 
