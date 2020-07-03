@@ -33,7 +33,7 @@ else:
 
 GCS_PATH = "gs://shopee-product-detection-data/data"
 CLASSES = 42
-BATCH_SIZE = 16 * STRATEGY.num_replicas_in_sync
+BATCH_SIZE = 128 * STRATEGY.num_replicas_in_sync
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 EPOCHS = 15
