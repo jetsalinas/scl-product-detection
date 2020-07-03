@@ -33,7 +33,7 @@ import gcsfs
 
 GCS_PATH = "gs://shopee-product-detection-data/data"
 CLASSES = 42
-BATCH_SIZE = 16 * 2
+BATCH_SIZE = 16
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 EPOCHS = 15
@@ -43,8 +43,8 @@ TRAIN_DF = pd.read_csv(GCS_PATH + "/train.csv")
 TRAIN_LEN = int(TRAIN_DF["filename"].shape[0] * (1 - VAL_SPLIT))
 VAL_LEN = int(TRAIN_DF["filename"].shape[0] * VAL_SPLIT)
 
-# IMG_SIZE = (240, 240) # B1
-IMG_SIZE = (300, 300) # B3
+IMG_SIZE = (240, 240) # B1
+# IMG_SIZE = (300, 300) # B3
 # IMG_SIZE = (456, 456) # B5
 # IMG_SIZE = (528, 528) # B6
 # IMG_SIZE = (600, 600) # B7
