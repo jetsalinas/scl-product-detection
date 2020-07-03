@@ -44,15 +44,15 @@ TRAIN_LEN = int(TRAIN_DF["filename"].shape[0] * (1 - VAL_SPLIT))
 VAL_LEN = int(TRAIN_DF["filename"].shape[0] * VAL_SPLIT)
 
 # IMG_SIZE = (240, 240) # B1
-# IMG_SIZE = (300, 300) # B3
+IMG_SIZE = (300, 300) # B3
 # IMG_SIZE = (456, 456) # B5
-IMG_SIZE = (528, 528) # B6
+# IMG_SIZE = (528, 528) # B6
 # IMG_SIZE = (600, 600) # B7
 
 OPTIMIZER = "sgd"
 LOSS_FN = "categorical_crossentropy"
 
-MODEL_NAME = "modelb6.h5"
+MODEL_NAME = "modelb7.h5"
 SAVE_PATH = "gs://shopee-product-detection-data/models/" + MODEL_NAME
 
 """
@@ -137,7 +137,7 @@ def prepare_dataset(dataset):
 """
 def get_model():
         
-    efnm = efn.EfficientNetB6(weights='noisy-student', include_top=False, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3))
+    efnm = efn.EfficientNetB7(weights='noisy-student', include_top=False, input_shape=(IMG_SIZE[0], IMG_SIZE[1], 3))
     efnm.trainable = True
     
     model = tf.keras.models.Sequential([
