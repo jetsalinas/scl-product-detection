@@ -133,7 +133,7 @@ def prepare_dataset(dataset):
 """
 def get_model():
         
-    fv = hub.KerasLayer("https://tfhub.dev/google/imagenet/resnet_v2_152/feature_vector/4", trainable=True, input_shape=(*IMG_SIZE, 3))
+    fv = hub.KerasLayer("https://tfhub.dev/google/imagenet/resnet_v2_152/feature_vector/4", input_shape=(*IMG_SIZE, 3))
     
     model = tf.keras.models.Sequential([
             fv,
